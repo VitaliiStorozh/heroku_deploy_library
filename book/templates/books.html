@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Book Name</th>
+        <th>Book Description</th>
+        <th>Author Name</th>
+        <th>Author Patronymic</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for book in books %}
+    <tr>
+        <td>{{ book.name }}</td>
+        <td>{{ book.description}}</td>
+        <td>{{ book.author.name}}</td>
+        <td>{{ book.author.patronymic}}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
