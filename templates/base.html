@@ -8,70 +8,81 @@
     <title>Library</title>
 </head>
 <body>
-<header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+<>
+<nav class="navbar navbar-dark bg-dark">
+    <form class="form-inline">
         <div class="container">
-            <a class="navbar-brand" >Library</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
             <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
-                        <a class="nav-link text-dark">Books</a>
+                        <a class="nav-link" href="{% url "home" %}">Library</a>
                     </li>
                 </ul>
             </div>
             <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
-                        <a class="nav-link text-dark">Authors</a>
+                        <a class="nav-link">Books</a>
                     </li>
                 </ul>
             </div>
             <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
-                        <a class="nav-link text-dark">My Orders</a>
+                        <a class="nav-link">Authors</a>
                     </li>
                 </ul>
             </div>
             <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
-                        <a class="nav-link text-dark">Log in</a>
+                        <a class="nav-link">My Orders</a>
                     </li>
                 </ul>
             </div>
             <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
-                        <a class="nav-link text-dark">Log out</a>
+                        <a class="nav-link" href="{% url "get_users" %}">Users</a>
                     </li>
                 </ul>
             </div>
             <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
-                        <a class="nav-link text-dark">Register</a>
+                        <a class="nav-link" href="{% url "register" %}">Register</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url "authorise" %}">Log in</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url "log_out" %}">Log out</a>
                     </li>
                 </ul>
             </div>
         </div>
-    </nav>
+    </form>
+</nav>
 </header>
 <main>
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-8">
-            <h1 class="mt-2">Library</h1>
-            <hr class="mt-0 mb-4">
-            {% block content %}
-            {% endblock %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-8">
+                <h1 class="mt-2">Library</h1>
+                <hr class="mt-0 mb-4">
+                {% block content %}
+                {% endblock %}
+            </div>
         </div>
     </div>
-</div>
 </main>
 </body>
 </html>

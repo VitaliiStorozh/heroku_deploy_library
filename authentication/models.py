@@ -44,7 +44,7 @@ class CustomUser(AbstractBaseUser):
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     role = models.IntegerField(default=0, choices=ROLE_CHOICES)
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
 
     USERNAME_FIELD = 'email'
     objects = BaseUserManager()
@@ -91,7 +91,7 @@ class CustomUser(AbstractBaseUser):
             return user
         except CustomUser.DoesNotExist:
             # LOGGER.error("User does not exist")
-            pass
+            raise ValueError("Incorrect email")
 
     @staticmethod
     def delete_by_id(user_id):
@@ -138,8 +138,8 @@ class CustomUser(AbstractBaseUser):
             user.save()
             return user
         except (IntegrityError, AttributeError, ValidationError, DataError):
-            # LOGGER.error("Wrong attributes or relational integrity error")
-            pass
+            #LOGGER.error("Wrong attributes or relational integrity error")
+            raise ValueError("Some troubles with creating user!")
 
     def to_dict(self):
         """
