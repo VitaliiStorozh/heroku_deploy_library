@@ -15,8 +15,10 @@
     <tr>
         <td>{{ book.name }}</td>
         <td>{{ book.description}}</td>
-        <td>{{ book.author.name}}</td>
-        <td>{{ book.author.patronymic}}</td>
+        {% for authors in book.authors.all %}
+        <td>{{ authors.name }}</td>
+        <td>{{ authors.patronymic }}</td>
+        {% endfor %}
     </tr>
     {% endfor %}
     </tbody>
