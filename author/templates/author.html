@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Author Name</th>
+        <th>Author Surname</th>
+        <th>Author Patronymic</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for author in authors %}
+    <tr>
+        <td>{{ author.name }}</td>
+        <td>{{ author.surname}}</td>
+        <td>{{ author.patronymic }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -17,7 +17,10 @@ from django.urls import path, include
 from authentication.views import home
 
 urlpatterns = [
+    path("", home, name="home")
     path("user/", include("authentication.urls")),
     path("order/", include("order.urls")),
-    path("", home, name="home")
+    path('book/', include('book.urls')),
+    path('author/', include('author.urls'))
 ]
+
