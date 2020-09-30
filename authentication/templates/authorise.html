@@ -2,6 +2,11 @@
 
 {% block content %}
     <h2>Authorise</h2>
+    {% for message in messages %}
+        <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
     <form method="post" autocomplete="off"> {% csrf_token %}
         {% for field in data %}
             <p>

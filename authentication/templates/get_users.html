@@ -2,6 +2,7 @@
 
 {% block content %}
     <h2>Users</h2>
+    <a class="btn btn-outline-success"  href="{% url "register" %}">New user</a>
     <table class="table">
         <thead class="thead-dark">
         <tr>
@@ -16,11 +17,13 @@
         <tbody>
         {% for element in users %}
             <tr>
-                <td>{{ element.first_name }}</td>
+                <td>
+                    <a class="btn btn-outline-info"  href="{% url "user_info" element.id %}">{{ element.first_name }}</a>
+                </td>
                 <td>{{ element.last_name }}</td>
                 <td>{{ element.middle_name }}</td>
                 <td>{{ element.email }}</td>
-                <td>{{ element.role }}</td>
+                <td>{{ element.get_role_name }}</td>
                 <td>{{ element.is_active }}</td>
                 <td>
                     <a class="btn btn-outline-warning"  href="{% url "update" element.id %}">Edit</a>
