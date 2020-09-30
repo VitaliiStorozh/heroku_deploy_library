@@ -28,3 +28,11 @@ class BooksViewById(ListView):
             return Book.objects.filter(pk=self.kwargs['pk'])
         except Book.DoesNotExist:
             raise Http404("No Books matches the given query.")
+
+
+class BooksViewAll(ListView):
+    model = Book
+    template_name = 'books.html'
+    context_object_name = 'books'
+    paginate_by = 10
+    queryset = Book.objects.all()

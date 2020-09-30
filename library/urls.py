@@ -17,7 +17,7 @@ from django.urls import path, include
 from authentication.views import home
 
 urlpatterns = [
-    path("", home, name="home"),
+    path("library/", home, name="home"),
     path("user/", include("authentication.urls")),
     path("order/", include("order.urls")),
     path('book/', include('book.urls')),

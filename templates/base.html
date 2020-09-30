@@ -22,14 +22,14 @@
             <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
-                        <a class="nav-link" >Books</a>
+                        <a class="nav-link" href="{% url "all_books" %} ">Books</a>
                     </li>
                 </ul>
             </div>
             <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
-                        <a class="nav-link">Authors</a>
+                        <a class="nav-link" href="{% url "all_author" %} ">Authors</a>
                     </li>
                 </ul>
             </div>
@@ -47,6 +47,7 @@
                     </li>
                 </ul>
             </div>
+            {% if not user.is_authenticated %}
             <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
@@ -61,6 +62,8 @@
                     </li>
                 </ul>
             </div>
+            {% endif %}
+            {% if user.is_authenticated %}
             <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
@@ -68,6 +71,7 @@
                     </li>
                 </ul>
             </div>
+            {% endif %}
         </div>
     </form>
 </nav>
