@@ -75,8 +75,8 @@ class CustomUser(AbstractBaseUser):
             user = CustomUser.objects.get(id=user_id)
             return user
         except CustomUser.DoesNotExist:
-            pass
             # LOGGER.error("User does not exist")
+            raise ValueError
 
     @staticmethod
     def get_by_email(email):
@@ -138,7 +138,7 @@ class CustomUser(AbstractBaseUser):
             user.save()
             return user
         except (IntegrityError, AttributeError, ValidationError, DataError):
-            #LOGGER.error("Wrong attributes or relational integrity error")
+            # LOGGER.error("Wrong attributes or relational integrity error")
             raise ValueError("Some troubles with creating user!")
 
     def to_dict(self):
@@ -221,3 +221,21 @@ class CustomUser(AbstractBaseUser):
         returns str role name
         """
         return self.get_role_display()
+
+    @staticmethod
+    def block(id):
+        try:
+            user = CustomUser.get_by_id(id)
+            user.is_active = False if user.is_active else True
+            user.save()
+        except ValueError:
+            pass
+
+    @staticmethod
+    def change_role(id):
+        try:
+            user = CustomUser.get_by_id(id)
+            user.role = 1 if user.role == 0 else 0
+            user.save()
+        except ValueError:
+            pass
