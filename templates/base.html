@@ -33,6 +33,7 @@
                     </li>
                 </ul>
             </div>
+            {% if user.is_authenticated %}
             <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
@@ -47,6 +48,7 @@
                     </li>
                 </ul>
             </div>
+            {% endif %}
             {% if not user.is_authenticated %}
             <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                 <ul class="navbar-nav flex-grow-1">

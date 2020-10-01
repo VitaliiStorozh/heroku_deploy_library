@@ -18,8 +18,8 @@
                 {% for authors in book.authors.all %}
                     <td>{{ authors.name }}</td>
                     <td>{{ authors.patronymic }}</td>
-                <td><a class="btn btn-outline-success" href="{% url "new_order" book.id %}">Order</a></td>
                 {% endfor %}
+                <td><a class="btn btn-outline-success" href="{% url "new_order" book.id %}">Order</a></td>
             </tr>
 
         {% endfor %}
