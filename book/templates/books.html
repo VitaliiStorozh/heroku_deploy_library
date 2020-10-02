@@ -7,7 +7,7 @@
             <th>Book Name</th>
             <th>Book Description</th>
             <th>Author Name</th>
-            <th>Author Patronymic</th>
+            <th>Author surname</th>
         </tr>
         </thead>
         <tbody>
@@ -17,7 +17,7 @@
                 <td>{{ book.description }}</td>
                 {% for authors in book.authors.all %}
                     <td>{{ authors.name }}</td>
-                    <td>{{ authors.patronymic }}</td>
+                    <td>{{ authors.surname }}</td>
                     <td><a class="btn btn-outline-success" href="{% url "new_order" book.id %}">Order</a></td>
                 {% endfor %}
             </tr>
