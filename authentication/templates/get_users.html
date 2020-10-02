@@ -1,8 +1,13 @@
 {% extends "base.html" %} }
 
 {% block content %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+    {% endfor %}
     <h2>Users</h2>
-    <a class="btn btn-outline-success"  href="{% url "register" %}">New user</a>
+    <a class="btn btn-outline-success" href="{% url "register" %}">New user</a>
     <table class="table">
         <thead class="thead-dark">
         <tr>
@@ -18,7 +23,7 @@
         {% for element in users %}
             <tr>
                 <td>
-                    <a class="btn btn-outline-info"  href="{% url "user_info" element.id %}">{{ element.first_name }}</a>
+                    <a class="btn btn-outline-info" href="{% url "user_info" element.id %}">{{ element.first_name }}</a>
                 </td>
                 <td>{{ element.last_name }}</td>
                 <td>{{ element.middle_name }}</td>
@@ -26,10 +31,10 @@
                 <td>{{ element.get_role_name }}</td>
                 <td>{{ element.is_active }}</td>
                 <td>
-                    <a class="btn btn-outline-warning"  href="{% url "update" element.id %}">Edit</a>
+                    <a class="btn btn-outline-warning" href="{% url "update" element.id %}">Edit</a>
                 </td>
                 <td>
-                    <a class="btn btn-outline-danger"  href="{% url "delete_user" element.id %}">Delete</a>
+                    <a class="btn btn-outline-danger" href="{% url "delete_user" element.id %}">Delete</a>
                 </td>
             </tr>
         {% endfor %}
