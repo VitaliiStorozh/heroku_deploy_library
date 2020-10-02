@@ -1,4 +1,6 @@
 from django.contrib import messages
+from django.core.exceptions import PermissionDenied
+from django.http import Http404
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from .models import CustomUser
@@ -76,9 +78,13 @@ def get_all(request):
         messages.warning(request, "Log in first!")
         return redirect("authorise")
     if not CustomUser.get_by_email(request.user.email).role == 1:
-        messages.warning(request, "You don`t have permission!")
-        return redirect("home")
-    return render(request, "get_users.html", {"users": CustomUser.get_all()})
+        # messages.warning(request, "You don`t have permission!")
+        # return redirect("home")
+        raise PermissionDenied
+    users = list(CustomUser.get_all())
+    if len(users) == 0:
+        raise Http404("You don't have any user registered in system")
+    return render(request, "get_users.html", {"users": users})
 
 
 def delete_user(request, id):
@@ -86,9 +92,11 @@ def delete_user(request, id):
         messages.warning(request, "Log in first!")
         return redirect("authorise")
     if not CustomUser.get_by_email(request.user.email).role == 1:
-        messages.warning(request, "You don`t have permission!")
-        return redirect("home")
-    CustomUser.delete_by_id(id)
+        # messages.warning(request, "You don`t have permission!")
+        # return redirect("home")
+        raise PermissionDenied
+    if not CustomUser.delete_by_id(id):
+        raise Http404("User doesn't exist")
     return redirect("get_users")
 
 
@@ -97,8 +105,11 @@ def user_info(request, id):
         messages.warning(request, "Log in first!")
         return redirect("authorise")
     if not CustomUser.get_by_email(request.user.email).role == 1:
-        messages.warning(request, "You don`t have permission!")
-        return redirect("home")
+        # messages.warning(request, "You don`t have permission!")
+        # return redirect("home")
+        raise PermissionDenied
+    if not CustomUser.get_by_id(id):
+        raise Http404("User doesn't exist")
     return render(request, "get_user_by_id.html", context={"user": CustomUser.get_by_id(id)})
 
 
@@ -107,9 +118,11 @@ def block(request, id):
         messages.warning(request, "Log in first!")
         return redirect("authorise")
     if not CustomUser.get_by_email(request.user.email).role == 1:
-        messages.warning(request, "You don`t have permission!")
-        return redirect("home")
-    CustomUser.block(id)
+        # messages.warning(request, "You don`t have permission!")
+        # return redirect("home")
+        raise PermissionDenied
+    if not CustomUser.block(id):
+        raise Http404("User doesn't exist")
     return redirect("user_info", id)
 
 
@@ -118,11 +131,10 @@ def change_role(request, id):
         messages.warning(request, "Log in first!")
         return redirect("authorise")
     if not CustomUser.get_by_email(request.user.email).role == 1:
-        messages.warning(request, "You don`t have permission!")
-        return redirect("home")
-    CustomUser.change_role(id)
+        # messages.warning(request, "You don`t have permission!")
+        # return redirect("home")
+        raise PermissionDenied
+    if not CustomUser.change_role(id):
+        raise Http404("User doesn't exist")
     return redirect("user_info", id)
 
-
-def home(request):
-    return render(request, "home.html")

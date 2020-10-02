@@ -47,7 +47,7 @@ class Book(models.Model):
             user = Book.objects.get(id=book_id)
             return user
         except Book.DoesNotExist:
-            pass
+            return False
             # LOGGER.error("User does not exist")
 
     @staticmethod
