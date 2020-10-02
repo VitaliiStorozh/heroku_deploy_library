@@ -1,14 +1,17 @@
+from django.contrib import messages
 from django.http import Http404
-from django.shortcuts import get_object_or_404
-from django.views.generic import ListView
+from django.shortcuts import get_object_or_404, render, redirect
+from django.views.generic import ListView, View
 
+from authentication.models import CustomUser
 from author.models import Author
+from book.forms import BookForm
 from book.models import Book
 
 
 class BooksListViewByAuthor(ListView):
     model = Book
-    template_name = 'books.html'
+    template_name = 'book/books.html'
     context_object_name = 'books'
     paginate_by = 10
 
@@ -19,7 +22,7 @@ class BooksListViewByAuthor(ListView):
 
 class BooksViewById(ListView):
     model = Book
-    template_name = 'books.html'
+    template_name = 'book/books.html'
     context_object_name = 'books'
     paginate_by = 10
 
@@ -32,7 +35,32 @@ class BooksViewById(ListView):
 
 class BooksViewAll(ListView):
     model = Book
-    template_name = 'books.html'
+    template_name = 'book/books.html'
     context_object_name = 'books'
     paginate_by = 10
     queryset = Book.objects.all()
+
+
+class BookCreate(View):
+    def get(self, request):
+        form = BookForm()
+        return render(request, 'book/book_create.html', context={'form': form})
+
+    def post(self, request):
+        bound_form = BookForm(request.POST)
+
+        if bound_form.is_valid():
+            new_book = bound_form.save()
+            return redirect(f'/book/{new_book.id}/')
+        return render(request, '/book/book_create.html', context={'form': bound_form})
+
+
+def delete_book(request, id):
+    if not request.user.is_authenticated:
+        messages.info(request, "Log in first!")
+        return redirect("authorise")
+    if not CustomUser.get_by_email(request.user.email).role == 1:
+        messages.info(request, "You don`t have permission!")
+        return redirect("home")
+    Book.delete_by_id(id)
+    return redirect("all_books")
