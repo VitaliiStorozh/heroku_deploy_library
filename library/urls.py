@@ -13,14 +13,17 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.urls import path, include
-from authentication.views import home
+from django.urls import path, include, re_path
+from .views import bad_request, home
 
 urlpatterns = [
     path("", home, name="home"),
     path("user/", include("authentication.urls")),
     path("order/", include("order.urls")),
     path('book/', include('book.urls')),
-    path('author/', include('author.urls'))
+    path('author/', include('author.urls')),
 ]
-
+handler400 = "library.views.bad_request"
+handler401 = "library.views.unauthorized"
+handler403 = "library.views.forbidden"
+handler404 = "library.views.page_not_found"

@@ -1,5 +1,8 @@
+from concurrent.futures._base import LOGGER
+
 from django.db import models, DataError, IntegrityError
 
+from django.http import Http404
 from authentication.models import CustomUser
 from author.models import Author
 from book.models import Book
@@ -26,6 +29,7 @@ class Order(models.Model):
         :return: class, id
         """
         return f'{self.__class__.__name__}(id={self.id})'
+
     def to_dict(self):
 
         return {
@@ -47,9 +51,7 @@ class Order(models.Model):
             order.save()
             return order
         except (IntegrityError, AttributeError, DataError, ValueError) as err:
-            # print(err)
-            # LOGGER.error("Wrong attributes or relational integrity error")
-            pass
+            LOGGER.error("Wrong attributes or relational integrity error")
 
     @staticmethod
     def get_by_id(order_id):
@@ -58,7 +60,7 @@ class Order(models.Model):
             user = Order.objects.get(id=order_id)
             return user
         except Order.DoesNotExist:
-            pass
+            return False
 
     def update(self, plated_end_at=None, end_at=None):
         if plated_end_at:
@@ -91,5 +93,4 @@ class Order(models.Model):
             return True
         except Order.DoesNotExist:
             # LOGGER.error("User does not exist")
-            pass
-        return False
+            return False

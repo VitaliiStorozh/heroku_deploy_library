@@ -1,8 +1,11 @@
+from concurrent.futures._base import LOGGER
+
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.db import models, IntegrityError
 from django.db.utils import DataError
+from django.http import Http404
 
 ROLE_CHOICES = (
     (0, 'visitor'),
@@ -75,8 +78,8 @@ class CustomUser(AbstractBaseUser):
             user = CustomUser.objects.get(id=user_id)
             return user
         except CustomUser.DoesNotExist:
-            # LOGGER.error("User does not exist")
-            raise ValueError
+            LOGGER.error("User does not exist")
+        return False
 
     @staticmethod
     def get_by_email(email):
@@ -90,7 +93,7 @@ class CustomUser(AbstractBaseUser):
             user = CustomUser.objects.get(email=email)
             return user
         except CustomUser.DoesNotExist:
-            # LOGGER.error("User does not exist")
+            LOGGER.error("User does not exist")
             raise ValueError("Incorrect email")
 
     @staticmethod
@@ -106,8 +109,7 @@ class CustomUser(AbstractBaseUser):
             user.delete()
             return True
         except CustomUser.DoesNotExist:
-            # LOGGER.error("User does not exist")
-            pass
+            LOGGER.error("User does not exist")
         return False
 
     @staticmethod
@@ -138,7 +140,7 @@ class CustomUser(AbstractBaseUser):
             user.save()
             return user
         except (IntegrityError, AttributeError, ValidationError, DataError):
-            # LOGGER.error("Wrong attributes or relational integrity error")
+            LOGGER.error("Wrong attributes or relational integrity error")
             raise ValueError("Some troubles with creating user!")
 
     def to_dict(self):
@@ -228,8 +230,8 @@ class CustomUser(AbstractBaseUser):
             user = CustomUser.get_by_id(id)
             user.is_active = False if user.is_active else True
             user.save()
-        except ValueError:
-            pass
+        except CustomUser.DoesNotExist:
+            return False
 
     @staticmethod
     def change_role(id):
@@ -237,5 +239,5 @@ class CustomUser(AbstractBaseUser):
             user = CustomUser.get_by_id(id)
             user.role = 1 if user.role == 0 else 0
             user.save()
-        except ValueError:
-            pass
+        except CustomUser.DoesNotExist:
+            return False

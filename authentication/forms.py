@@ -16,12 +16,17 @@ class RegisterForm(UserCreationForm):
     last_name = forms.CharField(max_length=20, required=True, label="Last name", validators=[validate_names])
     email = forms.EmailField(validators=[validate_email], required=True, max_length=100, label="Email")
     password1 = forms.CharField(max_length=128, label="Password", required=True, validators=[validate_password],
-                               widget=forms.PasswordInput)
+                                widget=forms.PasswordInput)
     role = forms.ChoiceField(label="Role", choices=ROLE_CHOICES, required=True)
 
     class Meta:
         model = CustomUser
         fields = ("first_name", "last_name", "middle_name", "email", "password1", "password2", "role")
+
+    def save(self, commit=True):
+        return CustomUser.create(self.cleaned_data.get("email"), self.cleaned_data.get("password1"),
+                                 self.cleaned_data.get("first_name"), self.cleaned_data.get("middle_name"),
+                                 self.cleaned_data.get("last_name"))
 
 
 class AuthoriseForm(forms.Form):
