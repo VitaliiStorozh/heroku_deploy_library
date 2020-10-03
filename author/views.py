@@ -43,6 +43,22 @@ class AuthorCreate(View):
         return render(request, '/author/author_create.html', context={'form': bound_form})
 
 
+class AuthorUpdate(View):
+    def get(self, request, id):
+        author = Author.get_by_id(id)
+        bound_form = AuthorForm(instance=author)
+        return render(request, 'author/author_update_form.html', context={'form': bound_form, 'author': author})
+
+    def post(self, request, id):
+        author = Author.get_by_id(id)
+        bound_form = AuthorForm(request.POST, instance=author)
+
+        if bound_form.is_valid():
+            new_author = bound_form.save()
+            return redirect(f'/author/{new_author.id}/')
+        return render(request, 'author/author_update_form.html', context={'form': bound_form, 'author': author})
+
+
 def delete_author(request, id):
     if not request.user.is_authenticated:
         messages.info(request, "Log in first!")
