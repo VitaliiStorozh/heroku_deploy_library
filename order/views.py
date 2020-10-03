@@ -13,7 +13,7 @@ def get_orders(request):
     if not check_is_authenticated(request):
         messages.warning(request, "Log in first!")
         return redirect("authorise")
-    if not check_is_admin(request):
+    if check_is_admin(request):
         orders = Order.get_all()
     else:
         orders = list(Order.objects.all().filter(user_id=request.user.id))

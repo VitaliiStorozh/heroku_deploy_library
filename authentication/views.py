@@ -19,9 +19,11 @@ def register(request, id=0):
             form = RegisterForm(request.POST, instance=user)
             context["data"] = form
         if form.is_valid():
+            if not id == 0:
+                CustomUser.delete_by_id(id)
             user = form.save()
-            login(request, user)
             if id == 0:
+                login(request, user)
                 messages.success(request, f"{form.cleaned_data.get('first_name')} welcome to our app")
                 return redirect("home")
             else:
@@ -59,9 +61,9 @@ def authorise(request):
                 return redirect("home")
             else:
                 context["data"] = form
-                context["password"] = "Incorrect password"
+                messages.warning(request, "Incorrect password")
         except ValueError as ve:
-            context["email"] = ve
+            messages.warning(request, str(ve))
             context["data"] = form
     else:
         form = AuthoriseForm()
