@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 {% load crispy_forms_filters %}
 {% block content %}
-    <h2>Register</h2>
+    <h2>Edit order</h2>
     <form method="post" autocomplete="off"> {% csrf_token %}
         {% for field in data %}
             <p>
-                {{ field |as_crispy_field }}
+                {{ field }}
                 {% for error in field.errors %}
                     <p>
-                        {{ error|as_crispy_errors }}
+                        {{ error| as_crispy_errors }}
                     </p>
                 {% endfor %}
             </p>
