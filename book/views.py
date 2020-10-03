@@ -5,7 +5,7 @@ from django.views.generic import ListView, View
 
 from authentication.models import CustomUser
 from author.models import Author
-from book.forms import BookForm
+from book.forms import *
 from book.models import Book
 
 
@@ -53,6 +53,22 @@ class BookCreate(View):
             new_book = bound_form.save()
             return redirect(f'/book/{new_book.id}/')
         return render(request, '/book/book_create.html', context={'form': bound_form})
+
+
+class BookUpdate(View):
+    def get(self, request, id):
+        book = Book.get_by_id(id)
+        bound_form = BookForm(instance=book)
+        return render(request, 'book/book_update_form.html', context={'form': bound_form, 'book': book})
+
+    def post(self, request, id):
+        book = Book.get_by_id(id)
+        bound_form = BookForm(request.POST, instance=book)
+
+        if bound_form.is_valid():
+            new_book = bound_form.save()
+            return redirect(f'/book/{new_book.id}/')
+        return render(request, 'book/book_update_form.html', context={'form': bound_form, 'book': book})
 
 
 def delete_book(request, id):
