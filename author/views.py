@@ -31,6 +31,12 @@ class AuthorViewAll(ListView):
 
 class AuthorCreate(View):
     def get(self, request):
+        if not request.user.is_authenticated:
+            messages.info(request, "Log in first!")
+            return redirect("authorise")
+        if not CustomUser.get_by_email(request.user.email).role == 1:
+            messages.info(request, "You don`t have permission!")
+            return redirect("home")
         form = AuthorForm()
         return render(request, 'author/author_create.html', context={'form': form})
 
@@ -45,13 +51,26 @@ class AuthorCreate(View):
 
 class AuthorUpdate(View):
     def get(self, request, id):
-        author = Author.get_by_id(id)
-        bound_form = AuthorForm(instance=author)
-        return render(request, 'author/author_update_form.html', context={'form': bound_form, 'author': author})
+        if not request.user.is_authenticated:
+            messages.info(request, "Log in first!")
+            return redirect("authorise")
+        if not CustomUser.get_by_email(request.user.email).role == 1:
+            messages.info(request, "You don`t have permission!")
+            return redirect("home")
+        try:
+            author = Author.get_by_id(id)
+            bound_form = AuthorForm(instance=author)
+            return render(request, 'author/author_update_form.html', context={'form': bound_form, 'author': author})
+        except Author.DoesNotExist:
+            raise Http404("Author does not exist")
 
     def post(self, request, id):
-        author = Author.get_by_id(id)
-        bound_form = AuthorForm(request.POST, instance=author)
+        try:
+            author = Author.get_by_id(id)
+            bound_form = AuthorForm(request.POST, instance=author)
+        except Author.DoesNotExist:
+            raise Http404("Author does not exist")
+
 
         if bound_form.is_valid():
             new_author = bound_form.save()
