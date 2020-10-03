@@ -230,6 +230,7 @@ class CustomUser(AbstractBaseUser):
             user = CustomUser.get_by_id(id)
             user.is_active = False if user.is_active else True
             user.save()
+            return True
         except CustomUser.DoesNotExist:
             return False
 
@@ -239,5 +240,6 @@ class CustomUser(AbstractBaseUser):
             user = CustomUser.get_by_id(id)
             user.role = 1 if user.role == 0 else 0
             user.save()
+            return True
         except CustomUser.DoesNotExist:
             return False
