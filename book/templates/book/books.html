@@ -1,6 +1,12 @@
+
 {% extends "base.html" %}
 
 {% block content %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+    {% endfor %}
     <h2>Book</h2>
     <a href="{% url 'book_create_url' %}"
        class="btn btn-light">Add New Book</a>
@@ -21,19 +27,19 @@
                 {% for authors in book.authors.all %}
                     <td>{{ authors.name }}</td>
                     <td>{{ authors.surname }}</td>
-                    <td><a class="btn btn-outline-success" href="{% url "new_order" book.id %}">Order</a></td>
-                    {% if user.is_authenticated and user.role == 1%}
-                        <td>
-                            <a class="btn btn-outline-warning" href="{% url "book_update_url" book.id %}">Update</a>
-                        </td>
-                    {% endif %}
-                    {% if user.is_authenticated and user.role == 1%}
-                        <td>
-                            <a class="btn btn-outline-danger" href="{% url "delete_book" book.id %}">Delete</a>
-                        </td>
-                    {% endif %}
 
                 {% endfor %}
+                {% if user.is_authenticated %}
+                    <td>
+                        <a class="btn btn-outline-success" href="{% url "new_order" book.id %}">Order</a>
+                    </td>
+                    <td>
+                        <a class="btn btn-outline-warning" href="{% url "book_update_url" book.id %}">Update</a>
+                    </td>
+                    <td>
+                        <a class="btn btn-outline-danger" href="{% url "delete_book" book.id %}">Delete</a>
+                    </td>
+                {% endif %}
             </tr>
 
         {% endfor %}
