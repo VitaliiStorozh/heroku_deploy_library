@@ -4,16 +4,16 @@ from django.http import Http404
 from django.shortcuts import render, redirect
 from datetime import datetime, timedelta
 
-from authentication.models import CustomUser
 from book.models import Book
 from .models import Order
+from checks import check_is_authenticated, check_is_admin
 
 
 def get_orders(request):
-    if not request.user.is_authenticated:
-        messages.info(request, "Log in first!")
+    if not check_is_authenticated(request):
+        messages.warning(request, "Log in first!")
         return redirect("authorise")
-    if CustomUser.get_by_email(request.user.email).role == 1:
+    if not check_is_admin(request):
         orders = Order.get_all()
     else:
         orders = list(Order.objects.all().filter(user_id=request.user.id))
@@ -23,8 +23,8 @@ def get_orders(request):
 
 
 def new_order(request, id):
-    if not request.user.is_authenticated:
-        messages.info(request, "Log in first!")
+    if not check_is_authenticated(request):
+        messages.warning(request, "Log in first!")
         return redirect("authorise")
     book = Book.get_by_id(id)
     if not book:
@@ -33,14 +33,14 @@ def new_order(request, id):
         messages.warning(request, f"We haven't any available book with name: {book.name} ")
     else:
         messages.info(request, "Order saved!")
-    return redirect("books_list_url")
+    return redirect("all_books")
 
 
 def delete_order(request, id):
-    if not request.user.is_authenticated:
-        messages.info(request, "Log in first!")
+    if not check_is_authenticated(request):
+        messages.warning(request, "Log in first!")
         return redirect("authorise")
-    if not (Order.get_by_id(id).user.id == request.user.id or CustomUser.get_by_id(request.user.id).role == 1):
+    if not (Order.get_by_id(id).user.id == request.user.id or check_is_admin(request)):
         raise PermissionDenied
     if not Order.delete_by_id(id):
         raise Http404("Order doesn't exist")
