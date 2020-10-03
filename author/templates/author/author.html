@@ -18,12 +18,12 @@
         <td>{{ author.name }}</td>
         <td>{{ author.surname}}</td>
         <td>{{ author.patronymic }}</td>
-    {% if user.is_authenticated %}
+    {% if user.is_authenticated and user.role == 1 %}
         <td>
         <a class="btn btn-outline-warning"  href="{% url "author_update_url" author.id %}">Edit</a>
         </td>
         {% endif %}
-        {% if user.is_authenticated %}
+        {% if user.is_authenticated and user.role == 1%}
         <td>
         <a class="btn btn-outline-danger"  href="{% url "delete_author" author.id %}">Delete</a>
         </td>

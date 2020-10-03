@@ -22,12 +22,12 @@
                     <td>{{ authors.name }}</td>
                     <td>{{ authors.surname }}</td>
                     <td><a class="btn btn-outline-success" href="{% url "new_order" book.id %}">Order</a></td>
-                    {% if user.is_authenticated %}
+                    {% if user.is_authenticated and user.role == 1%}
                         <td>
                             <a class="btn btn-outline-warning" href="{% url "book_update_url" book.id %}">Update</a>
                         </td>
                     {% endif %}
-                    {% if user.is_authenticated %}
+                    {% if user.is_authenticated and user.role == 1%}
                         <td>
                             <a class="btn btn-outline-danger" href="{% url "delete_book" book.id %}">Delete</a>
                         </td>
