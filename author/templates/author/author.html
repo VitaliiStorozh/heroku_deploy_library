@@ -3,34 +3,34 @@
 {% block content %}
     <h2>Authors</h2>
     {% if user.is_authenticated and user.role == 1 %}
-    <a href="{% url 'author_create_url' %}"
-               class="btn btn-light">Add New Author</a>
+        <a href="{% url 'author_create_url' %}"
+           class="btn btn-light">Add New Author</a>
     {% endif %}
-<table class="table table-bordered">
-    <thead>
-    <tr>
-        <th>Author Name</th>
-        <th>Author Surname</th>
-        <th>Author Patronymic</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for author in authors %}
-    <tr>
-        <td>{{ author.name }}</td>
-        <td>{{ author.surname}}</td>
-        <td>{{ author.patronymic }}</td>
-    {% if user.is_authenticated and user.role == 1 %}
-        <td>
-        <a class="btn btn-outline-warning"  href="{% url "author_update_url" author.id %}">Edit</a>
-        </td>
-        <td>
-        <a class="btn btn-outline-danger"  href="{% url "delete_author" author.id %}">Delete</a>
-        </td>
-        {% endif %}
-    </tr>
-    {% endfor %}
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Author Name</th>
+            <th>Author Patronymic</th>
+            <th>Author Surname</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for author in authors %}
+            <tr>
+                <td>{{ author.name }}</td>
+                <td>{{ author.patronymic }}</td>
+                <td>{{ author.surname }}</td>
+                {% if user.is_authenticated and user.role == 1 %}
+                    <td>
+                        <a class="btn btn-outline-warning" href="{% url "author_update_url" author.id %}">Edit</a>
+                    </td>
+                    <td>
+                        <a class="btn btn-outline-danger" href="{% url "delete_author" author.id %}">Delete</a>
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
 
-    </tbody>
-</table>
+        </tbody>
+    </table>
 {% endblock %}
